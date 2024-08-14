@@ -1,0 +1,65 @@
+﻿@page "/filter"
+@rendermode InteractiveServer
+
+<PageTitle>Filter</PageTitle>
+ 
+<h1>Filter</h1>
+
+<div class="filter-container">
+    <div class="filter-controls">
+        <select @bind="selectedColor" class="form-control">
+            <option value="">Select Color</option>
+
+            @foreach (var color in distinctColors)
+            {
+                <option value="@color">@color</option>
+            }
+        </select>
+
+        <button class="btn btn-primary" @onclick="ApplyFilter">Apply Filter</button>
+    </div>
+
+    <div class="card-container">
+        @foreach (var card in filteredCards)
+        {
+            <div class="card-item">
+                <h4>@card.Name</h4>
+                <img src="@card.Image" alt="@card.Name" />
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    string selectedColor = "";
+    List<string> distinctColors = new List<string>();
+    IQueryable<Services.Services.CardModel> allCards;
+    IQueryable<Services.Services.CardModel> filteredCards;
+
+    Services.Services services = new Services.Services();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RefreshCards();
+    }
+
+    void RefreshCards()
+    {
+        allCards = services.GetCards();
+        filteredCards = allCards;
+        distinctColors = services.GetDistinctColors().ToList();
+    }
+
+    void ApplyFilter()
+    {
+        if (!string.IsNullOrWhiteSpace(selectedColor))
+        {
+            filteredCards = services.GetCardsByColor(selectedColor);
+        }
+        else
+        {
+            filteredCards = allCards;
+        }
+    }
+}

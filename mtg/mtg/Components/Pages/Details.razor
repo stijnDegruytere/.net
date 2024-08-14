@@ -1,0 +1,50 @@
+﻿@page "/detail"
+@rendermode InteractiveServer
+
+<PageTitle>Card Details</PageTitle>
+
+<div class="details-container">
+    <h1>Card Details</h1>
+
+    @if (currentCard != null)
+    {
+        <div class="card-details">
+            <h2>@currentCard.Name</h2>
+            <img src="@currentCard.Image" alt="@currentCard.Name" />
+            <p><strong>Mana Cost:</strong> @currentCard.ManaCost</p>
+            <p><strong>Type:</strong> @currentCard.Type</p>
+            <p><strong>Rarity:</strong> @currentCard.Rarity</p>
+        </div>
+
+        <button class="btn btn-primary" @onclick="NextCard">Next Card</button>
+    }
+    else
+    {
+        <p>No card details available.</p>
+    }
+</div>
+
+@code {
+    Services.Services services;
+    Services.Services.CardModel currentCard;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        services = new Services.Services();
+        LoadRandomCard();
+    }
+
+    void LoadRandomCard()
+    {
+        // Call the GetRandomCard method from the Services class to get a random card
+        currentCard = services.GetRandomCard();
+    }
+
+    void NextCard()
+    {
+        // Load details of the next random card
+        LoadRandomCard();
+        StateHasChanged(); // Refresh the page to show the new card details
+    }
+}

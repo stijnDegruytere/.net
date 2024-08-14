@@ -1,0 +1,117 @@
+/* Style for the deckbuilder container */
+.deckbuilder-container[b-gntms8kzm3] {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Style for the deck section */
+.deck-section[b-gntms8kzm3] {
+    margin-bottom: 20px;
+}
+
+/* Style for the deck list */
+.deck-list[b-gntms8kzm3] {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Style for each deck cad */
+.deck-card[b-gntms8kzm3] {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.deck-card:hover[b-gntms8kzm3] {
+    background-color: #3e8e41;
+}
+
+/* Style for the search section */
+.search-section[b-gntms8kzm3] {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Style for the form control (search input) */
+.form-control[b-gntms8kzm3] {
+    width: 200px;
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for the primary button */
+.btn-primary[b-gntms8kzm3] {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover[b-gntms8kzm3] {
+    background-color: #0056b3;
+}
+
+/* Style for the card container */
+.card-container[b-gntms8kzm3] {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+}
+
+/* Style for each card item */
+.card-item[b-gntms8kzm3] {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-item div[b-gntms8kzm3] {
+    padding: 10px;
+}
+
+.card-item img[b-gntms8kzm3] {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid #ccc;
+}
+
+.card-item h4[b-gntms8kzm3] {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.card-item:hover[b-gntms8kzm3] {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+p[b-gntms8kzm3] {
+    color: #666;
+    font-size: 16px;
+}

@@ -1,0 +1,91 @@
+﻿@page "/deckbuilder"
+@rendermode InteractiveServer
+@using mtg.Models
+
+<PageTitle>Deckbuilder</PageTitle>
+
+<h1>Deckbuilder</h1>
+
+<div class="deckbuilder-container">
+    <div class="deck-section">
+        <h2>Deck</h2>
+
+        <ul class="deck-list">
+            @foreach (var card in deck)
+            {
+                <li class="deck-card" @onclick="() => RemoveFromDeck(card)">@card.Name</li>
+            }
+        </ul>
+    </div>
+
+    <div class="search-section">
+        <InputText @bind-Value="searchQuery" placeholder="Search for cards..." class="form-control" />
+
+        <button class="btn btn-primary" @onclick="Search">Search</button>
+    </div>
+
+    <div class="available-cards-section">
+        <h2>Available Cards</h2>
+
+        <div class="card-container">
+            @foreach (var card in filteredCards)
+            {
+                <div class="card-item" @onclick="() => AddToDeck(card)">
+                    <h4>@card.Name</h4>
+                    <img src="@card.Image" alt="@card.Name" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    List<Card> deck = new List<Card>();
+    string searchQuery = "";
+    List<Services.Services.CardModel> filteredCards;
+
+    Services.Services services = new Services.Services();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RefreshCards();
+    }
+
+    void RefreshCards()
+    {
+        var allCards = services.GetCards().ToList();
+        filteredCards = allCards;
+    }
+
+    void AddToDeck(Services.Services.CardModel cardModel)
+    {
+        var card = ConvertToCard(cardModel);
+
+        if (!deck.Contains(card))
+        {
+            deck.Add(card);
+        }
+    }
+
+    void Search()
+    {
+        var allCards = services.GetCards().ToList();
+
+        filteredCards = allCards.Where(c => c.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    void RemoveFromDeck(Card card)
+    {
+        deck.Remove(card);
+    } 
+
+    Card ConvertToCard(Services.Services.CardModel cardModel)
+    {
+        return new Card
+            {
+                Name = cardModel.Name,
+                Image = cardModel.Image
+            };
+    }
+}

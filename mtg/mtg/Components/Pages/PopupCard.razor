@@ -1,0 +1,56 @@
+@page "/PopupCard"
+@rendermode InteractiveServer
+@using mtg.Models
+
+<PageTitle>Popup Card</PageTitle>
+
+<head>
+    <link rel="stylesheet" href="PopupCard.css"/>
+</head>
+
+<div class="model" style="display: @(_show ? "block" : "none")">
+    <div class="Model-dialog">
+        <div class="model-content">
+            <div class="model-header">
+                <h5 class="model-title">
+                    @if (currentCard != null)
+                    {
+                        (_, string image, string name, _) = currentCard;
+                        <label>@string.Format("{0} ", name)</label>
+                    }
+                </h5>
+                <button type="button" class="close" @onclick="_closePopup">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="model-body">
+                @if (currentCard != null)
+                {
+                    (_, string image, string name, _) = currentCard;
+                    <img src=@string.Format("{0}", image) />
+                }
+                else
+                {
+                    <img src="assets/image/cards/cardback.jpg" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _show = false;
+    CardModel currentCard;
+
+    public void ShowPopup(CardModel card)
+    {
+        currentCard = card;
+        _show = true;
+        StateHasChanged();
+    }
+
+    private void _closePopup()
+    {
+        _show = false;
+    }
+}
