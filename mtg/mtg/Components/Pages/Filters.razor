@@ -1,65 +1,114 @@
 ﻿@page "/filter"
 @rendermode InteractiveServer
+@using mtg.Models
+@inject CardService cardService
 
-<PageTitle>Filter</PageTitle>
- 
-<h1>Filter</h1>
+<div>
+    <h3>Filter Cards</h3>
 
-<div class="filter-container">
-    <div class="filter-controls">
-        <select @bind="selectedColor" class="form-control">
-            <option value="">Select Color</option>
+    <!-- Filter by color -->
+    <label for="colorFilter">Color:</label>
+    <input type="text" id="colorFilter" @bind="colorFilter" placeholder="Enter a color" />
 
-            @foreach (var color in distinctColors)
+    <!-- Button to trigger filtering -->
+    <button @onclick="ApplyFilters">Apply Filters</button>
+</div>
+
+<div>
+    <h3>Filtered Cards</h3>
+
+    @if (filteredCards != null && filteredCards.Count > 0)
+    {
+        <ul>
+            @foreach (var card in pagedCards)
             {
-                <option value="@color">@color</option>
+                <li>@card.Name (@card.Color)</li>
             }
-        </select>
+        </ul>
 
-        <button class="btn btn-primary" @onclick="ApplyFilter">Apply Filter</button>
-    </div>
-
-    <div class="card-container">
-        @foreach (var card in filteredCards)
-        {
-            <div class="card-item">
-                <h4>@card.Name</h4>
-                <img src="@card.Image" alt="@card.Name" />
-            </div>
-        }
-    </div>
+        <!-- Pagination Controls -->
+        <div>
+            <button @onclick="PreviousPage" disabled="@(!CanGoPrevious())">Previous</button>
+            Page @currentPage of @totalPages
+            <button @onclick="NextPage" disabled="@(!CanGoNext())">Next</button>
+        </div>
+    }
+    else
+    {
+        <p>No cards match the filter.</p>
+    }
 </div>
 
 @code {
-    string selectedColor = "";
-    List<string> distinctColors = new List<string>();
-    IQueryable<Services.Services.CardModel> allCards;
-    IQueryable<Services.Services.CardModel> filteredCards;
+    private string colorFilter = "";
+    private List<CardModel> filteredCards = new List<CardModel>();
+    private List<CardModel> pagedCards = new List<CardModel>();
+    private int currentPage = 1;
+    private int pageSize = 100;
+    private int totalPages = 0;
 
-    Services.Services services = new Services.Services();
-
-    protected override void OnInitialized()
+    private void ApplyFilters()
     {
-        base.OnInitialized();
-        RefreshCards();
+        // Assuming GetCards() fetches all the cards
+        var allCards = GetCards();
+
+        // Filter by color
+        filteredCards = allCards
+            .Where(card => card.Color.ToLower().Contains(colorFilter.ToLower()))
+            .ToList();
+
+        // Calculate total pages
+        totalPages = (int)Math.Ceiling((double)filteredCards.Count / pageSize);
+
+        // Load the first page
+        LoadPage();
     }
 
-    void RefreshCards()
+    private void LoadPage()
     {
-        allCards = services.GetCards();
-        filteredCards = allCards;
-        distinctColors = services.GetDistinctColors().ToList();
+        // Ensure currentPage is within valid bounds
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        // Paginate the results
+        pagedCards = filteredCards
+            .Skip((currentPage - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
     }
 
-    void ApplyFilter()
+    private void PreviousPage()
     {
-        if (!string.IsNullOrWhiteSpace(selectedColor))
+        if (CanGoPrevious())
         {
-            filteredCards = services.GetCardsByColor(selectedColor);
+            currentPage--;
+            LoadPage();
         }
-        else
+    }
+
+    private void NextPage()
+    {
+        if (CanGoNext())
         {
-            filteredCards = allCards;
+            currentPage++;
+            LoadPage();
         }
+    }
+
+    private bool CanGoPrevious() => currentPage > 1;
+    private bool CanGoNext() => currentPage < totalPages;
+
+    private List<CardModel> GetCards()
+    {
+        // Dummy data for now, replace this with a call to your service or database
+        return new List<CardModel>
+        {
+            new CardModel(1, "Card 1", "image1.jpg", "Red"),
+            new CardModel(2, "Card 2", "image2.jpg", "Blue"),
+            new CardModel(3, "Card 3", "image3.jpg", "Green"),
+            new CardModel(4, "Card 4", "image4.jpg", "Red"),
+            new CardModel(5, "Card 5", "image5.jpg", "Blue"),
+            // Add more cards as needed
+        };
     }
 }

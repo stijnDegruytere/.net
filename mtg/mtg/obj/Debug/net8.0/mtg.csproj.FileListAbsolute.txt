@@ -234,3 +234,4 @@ C:\Users\stijn\Documents\.NET\group-18\mtg\mtg\obj\Debug\net8.0\scopedcss\Compon
 C:\Users\stijn\Documents\.NET\group-18\mtg\mtg\obj\Debug\net8.0\scopedcss\Components\Pages\Home.razor.rz.scp.css
 C:\Users\stijn\Documents\.NET\group-18\mtg\mtg\obj\Debug\net8.0\scopedcss\Components\Pages\Login.razor.rz.scp.css
 C:\Users\stijn\Documents\.NET\group-18\mtg\mtg\obj\Debug\net8.0\scopedcss\Components\Pages\Register.razor.rz.scp.css
+C:\Users\stijn\Documents\.NET\group-18\mtg\mtg\obj\Debug\net8.0\mtg.sourcelink.json

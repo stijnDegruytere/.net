@@ -90,4 +90,6 @@ namespace mtg.Services
             public string? Artist { get; init; }
         }
     }
+
+
 }
